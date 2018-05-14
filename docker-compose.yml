@@ -1,0 +1,44 @@
+version: "3"
+services:
+  react:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile-react
+    volumes:
+      - ./react_app:/app
+    ports:
+      - "3000:3000"
+
+  backend:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile-backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  bot:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile-bot
+    environment:
+      TOKEN: ${TG_TOKEN}
+    volumes:
+      - ./bot:/app
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+
+  db:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile-db
+    ports:
+      - "5432:5432"
+
+  nginx:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile-nginx

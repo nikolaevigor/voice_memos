@@ -16,7 +16,7 @@ if not _TOKEN:
 
 def handle_start(bot, update):
     update.message.reply_text(
-        'Hi! It\'s voice memos bot. Send me your voice message, that you want to store.')
+        'Hi! We are ready to go. Send me some voice messages.')
 
 
 def handle_voice(bot, update):
