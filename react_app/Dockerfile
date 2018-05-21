@@ -1,7 +1,7 @@
-FROM node:alpine
-RUN apk add --no-cache --update build-base linux-headers
+FROM node:10.1
 RUN mkdir /app
 WORKDIR /app
-COPY /react_app/* /app/
+COPY package.json /app
 RUN yarn install
+COPY . /app
 CMD yarn start
