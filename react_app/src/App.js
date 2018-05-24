@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import Audio from "./Audio";
+import LandingPage from "./LandingPage";
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <Audio label="hey" />
+        <LandingPage />
       </div>
     );
   }
