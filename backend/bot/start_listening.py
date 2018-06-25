@@ -1,6 +1,7 @@
 import os
 import logging
 
+import boto3
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 logging.basicConfig(
@@ -8,9 +9,19 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-_TOKEN = str(os.environ.get('TOKEN'))
+_TG_TOKEN = str(os.environ.get('TG_TOKEN'))
+_AWS_BUCKET_REGION = str(os.environ.get('AWS_BUCKET_REGION'))
+_AWS_ACCESS_KEY_ID = str(os.environ.get('AWS_ACCESS_KEY_ID'))
+_AWS_SECRET_ACCESS_KEY = str(os.environ.get('AWS_SECRET_ACCESS_KEY'))
 
-if not _TOKEN:
+s3 = boto3.resource('s3', region_name=_AWS_BUCKET_REGION,
+                    aws_access_key_id=_AWS_ACCESS_KEY_ID,
+                    aws_secret_access_key=_AWS_SECRET_ACCESS_KEY)
+
+for bucket in s3.buckets.all():
+    print(bucket.name)
+
+if not _TG_TOKEN:
     raise SystemError('Can\'t start without TOKEN')
 
 
@@ -35,7 +46,7 @@ def error(bot, update, error):
 
 
 def poll():
-    updater = Updater(_TOKEN)
+    updater = Updater(_TG_TOKEN)
     dp = updater.dispatcher
     dp.add_handler(CommandHandler("start", handle_start))
     dp.add_handler(MessageHandler(Filters.voice, handle_voice))

@@ -10,7 +10,7 @@ services:
 
   backend:
     build:
-      context: ./site_backend
+      context: ./backend/site
     ports:
       - "8000:8000"
     depends_on:
@@ -18,11 +18,11 @@ services:
 
   bot:
     build:
-      context: ./bot
+      context: ./backend/bot
     environment:
-      TOKEN: ${TG_TOKEN}
+      TG_TOKEN: ${TG_TOKEN}
     volumes:
-      - ./:/app
+      - ./backend/bot:/app
     ports:
       - "80:80"
     depends_on:
@@ -30,10 +30,10 @@ services:
 
   db:
     build:
-      context: ./db
+      context: ./backend/db
     ports:
       - "5432:5432"
 
   nginx:
     build:
-      context: ./nginx
+      context: ./backend/nginx
